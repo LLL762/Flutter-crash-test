@@ -12,6 +12,7 @@ class IconBtn extends StatelessWidget {
   final Color iconColor;
   final IconData iconData;
   final String? text;
+  final VoidCallback? onPressed;
 
   const IconBtn(
       {super.key,
@@ -19,9 +20,10 @@ class IconBtn extends StatelessWidget {
       this.bgColor = bgColorDefault,
       this.iconColor = iconColorDefault,
       required this.iconData,
-      this.text});
+      this.text,
+      this.onPressed});
 
-  onPressed() {}
+  onPressedDefault() {}
 
   Widget buildNoText() {
     return CircleAvatar(
@@ -29,7 +31,7 @@ class IconBtn extends StatelessWidget {
         backgroundColor: bgColor,
         child: IconButton(
             iconSize: size,
-            onPressed: onPressed,
+            onPressed: onPressed ?? onPressedDefault,
             icon: Icon(
               iconData,
               color: iconColor,

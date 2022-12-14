@@ -21,37 +21,51 @@ class HomeTitleSection extends StatelessWidget {
                   text: 'Kandersteg, Switzerland', color: Color(0xFF9E9E9E)),
             ],
           )),
-          const TitleSectionRating(rating: 47)
+          const TitleSectionRating()
         ]));
   }
 }
 
-class TitleSectionRating extends StatelessWidget {
-  static const ratingColor = Color(0xFFF44336);
+class TitleSectionRating extends StatefulWidget {
+  const TitleSectionRating({super.key});
+
+  @override
+  State<StatefulWidget> createState() => TitleSectionRatingState();
+}
+
+class TitleSectionRatingState extends State<TitleSectionRating> {
   static const noRatingColor = Color(0xFFBBBABA);
+  static const defaultColor = Colors.orangeAccent;
 
-  final int rating;
+  bool isFavorited = false;
+  int favoritedCount = 41;
 
-  const TitleSectionRating({super.key, this.rating = 0});
-
-  Widget _buildDefault(int rating) {
-    return Row(children: [
-      const Icon(Icons.star, color: ratingColor),
-      const SizedBox(width: 5),
-      TextDefaultWidget(text: rating.toString())
-    ]);
+  toggleFavorite() {
+    setState(() {
+      favoritedCount += isFavorited ? -1 : 1;
+      isFavorited = !isFavorited;
+    });
   }
 
-  Widget _buildNoRating() {
-    return Row(children: const [
-      Icon(Icons.star, color: noRatingColor),
-      SizedBox(width: 10),
-      TextDefaultWidget(text: "No rating yet", color: noRatingColor)
+  Widget _buildDefault() {
+    final icon = Icon(isFavorited ? Icons.star : Icons.star_border_outlined);
+
+    return Row(children: [
+      IconButton(
+          splashRadius: 25,
+          icon: icon,
+          onPressed: toggleFavorite,
+          color: favoritedCount > 0 ? defaultColor : noRatingColor),
+      SizedBox(
+          width: 18,
+          child: SizedBox(
+            child: Text('$favoritedCount'),
+          ))
     ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return rating > 0 ? _buildDefault(rating) : _buildNoRating();
+    return _buildDefault();
   }
 }
